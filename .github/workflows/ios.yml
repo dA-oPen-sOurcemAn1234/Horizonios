@@ -100,6 +100,17 @@ jobs:
           path: Horizon-game-unsigned.ipa
           retention-days: 7
           if-no-files-found: error
+      - name: Publish the .ipa to Releases
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "ios-run-${GITHUB_RUN_NUMBER}" Horizon-game-unsigned.ipa \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "iOS build #${GITHUB_RUN_NUMBER}" \
+            --notes "Unsigned .ipa, with no assets. Built from ${GITHUB_SHA::7}."
+
       - name: Send the .ipa to Discord
         # Delivery is optional: the IPA is already available in the run's artifacts.
         continue-on-error: true
