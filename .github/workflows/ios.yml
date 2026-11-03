@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [main]
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: ios-${{ github.sha }}
   cancel-in-progress: false
